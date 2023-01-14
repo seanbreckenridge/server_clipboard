@@ -9,6 +9,13 @@ import (
 	"strings"
 )
 
+func checkServerAddress(addr string) string {
+	if strings.TrimSpace(addr) == "" {
+		log.Fatalln("--server_address or envvar $CLIPBOARD_ADDRESS is required")
+	}
+	return addr
+}
+
 func main() {
 	app := &cli.App{
 		Name:  "server_clipboard",
@@ -30,9 +37,8 @@ func main() {
 			},
 			&cli.StringFlag{
 				Name:     "server_address",
-				Value:    "localhost:5025",
 				Usage:    "server address to connect to",
-				Required: true,
+				Required: false,
 				EnvVars:  []string{"CLIPBOARD_ADDRESS"},
 			},
 		},
@@ -58,7 +64,7 @@ func main() {
 				Aliases: []string{"c"},
 				Usage:   "copy to server clipboard",
 				Action: func(c *cli.Context) error {
-					text, err := server_clipboard.Copy(c.String("password"), c.String("server_address"), server_clipboard.FetchClipboard(c.String("clipboard")))
+					text, err := server_clipboard.Copy(c.String("password"), checkServerAddress(c.String("server_address")), server_clipboard.FetchClipboard(c.String("clipboard")))
 					if err != nil {
 						return err
 					}
@@ -81,7 +87,7 @@ func main() {
 				Aliases: []string{"p"},
 				Usage:   "paste from server clipboard",
 				Action: func(c *cli.Context) error {
-					text, err := server_clipboard.Paste(c.String("password"), c.String("server_address"))
+					text, err := server_clipboard.Paste(c.String("password"), checkServerAddress(c.String("server_address")))
 					if err != nil {
 						return err
 					}
