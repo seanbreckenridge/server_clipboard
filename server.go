@@ -56,7 +56,9 @@ func Server(password string, port int, debug bool) error {
 		// unlock for writing
 		lock.Lock()
 		defer lock.Unlock()
-		log.Printf("copying '%s' to clipboard\n", input.Text)
+		if debug {
+			log.Printf("copying '%s' to clipboard\n", input.Text)
+		}
 		clipboard = Clipboard{Text: input.Text, Timestamp: time.Now()}
 
 		w.Header().Set("Content-Type", "text/plain")
@@ -79,7 +81,9 @@ func Server(password string, port int, debug bool) error {
 		lock.RLock()
 		defer lock.RUnlock()
 
-		log.Printf("fetching '%s' from clipboard\n", clipboard.Text)
+		if debug {
+			log.Printf("fetching '%s' from clipboard\n", clipboard.Text)
+		}
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte(clipboard.Text))
 
