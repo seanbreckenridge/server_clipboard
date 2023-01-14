@@ -33,6 +33,8 @@ GLOBAL OPTIONS:
    --help, -h              show help (default: false)
 ```
 
+This automatically detects which operating system you're on and uses the corresponding clipboard commands, see [`clipboard.go`](clipboard.go). If this cant, set the `CLIPBOARD_PASTE_COMMAND` and `CLIPBOARD_COPY_COMMAND` environment variables
+
 ### Install
 
 Install `golang`.
