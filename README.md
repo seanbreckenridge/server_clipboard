@@ -42,7 +42,7 @@ Install `golang`.
 You can clone and run `go build`, or:
 
 ```
-go install -v "github.com/seanbreckenridge/server_clipboard@latest"
+go install -v "github.com/seanbreckenridge/server_clipboard/cmd/server_clipboard@latest"
 ```
 
 which downloads, builds and puts the binary on your `$GOBIN`.
