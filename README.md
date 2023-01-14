@@ -1,4 +1,4 @@
-## server-clipboard
+## server_clipboard
 
 A server which saves my clipboard (in memory), so I can share it between my devices.
 
@@ -15,10 +15,10 @@ export CLIPBOARD_ADDRESS='http://mywebsite.com/clipboard'
 
 ```
 NAME:
-   server-clipboard - share clipboard between devices using a server
+   server_clipboard - share clipboard between devices using a server
 
 USAGE:
-   server-clipboard [global options] command [command options] [arguments...]
+   server_clipboard [global options] command [command options] [arguments...]
 
 COMMANDS:
    server, s  start server
@@ -40,7 +40,7 @@ Install `golang`.
 You can clone and run `go build`, or:
 
 ```
-go install -v "github.com/seanbreckenridge/server-clipboard@latest"
+go install -v "github.com/seanbreckenridge/server_clipboard@latest"
 ```
 
 which downloads, builds and puts the binary on your `$GOBIN`.

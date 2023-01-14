@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/seanbreckenridge/server-clipboard"
+	"github.com/seanbreckenridge/server_clipboard"
 	"github.com/urfave/cli/v2"
 	"log"
 	"os"
@@ -11,7 +11,7 @@ import (
 
 func main() {
 	app := &cli.App{
-		Name:  "server-clipboard",
+		Name:  "server_clipboard",
 		Usage: "share clipboard between devices using a server",
 		Flags: []cli.Flag{
 			&cli.IntFlag{

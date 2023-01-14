@@ -1,4 +1,4 @@
-module github.com/seanbreckenridge/server-clipboard
+module github.com/seanbreckenridge/server_clipboard
 
 go 1.19
 
