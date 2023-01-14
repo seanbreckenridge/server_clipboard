@@ -23,9 +23,8 @@ type CopyInput struct {
 
 func Server(password string, port int, debug bool) error {
 	// keep track of server state
-	var clipboard Clipboard
-	var lock = sync.RWMutex{}
-	clipboard = Clipboard{Text: "", Timestamp: time.Now()}
+	lock := sync.RWMutex{}
+	clipboard := Clipboard{Text: "", Timestamp: time.Now()}
 
 	// start server
 	http.HandleFunc("/copy", func(w http.ResponseWriter, r *http.Request) {
@@ -85,6 +84,7 @@ func Server(password string, port int, debug bool) error {
 			log.Printf("fetching '%s' from clipboard\n", clipboard.Text)
 		}
 		w.WriteHeader(http.StatusOK)
+		w.Header().Set("X-Clipboard-Timestamp", clipboard.Timestamp.Format(time.RFC822Z))
 		w.Write([]byte(clipboard.Text))
 
 	})
