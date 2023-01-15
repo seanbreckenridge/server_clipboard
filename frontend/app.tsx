@@ -43,7 +43,7 @@ const App = () => {
     });
   };
 
-  const paste = async () => {
+  const paste = () => {
     // default to defaultServerUrl if serverUrl is empty
     const url = serverUrl.trim() || defaultServerUrl;
     fetch(urlJoin(url, "paste"), {
