@@ -37,7 +37,7 @@ This automatically detects which operating system you're on and uses the corresp
 
 ### Install
 
-Install `golang`.
+Install `golang` (requires `1.18`+)
 
 You can clone and run `go build`, or:
 

@@ -1,0 +1,23 @@
+{
+  "name": "server_clipboard_frontend",
+  "license": "MIT",
+  "version": "0.0.1",
+  "description": "Server clipboard frontend",
+  "scripts": {
+    "check": "tsc --noEmit index.tsx",
+    "build": "esbuild app.tsx --bundle --minify --outfile=dist/bundle.js && ./build"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-toastify": "^9.1.1"
+  },
+  "devDependencies": {
+    "typescript": "^4.9.4",
+    "@types/react-dom": "^18.0.10",
+    "@types/react-toastify": "^4.1.0",
+    "@types/react": "^18.0.26",
+    "esbuild": "^0.17.0",
+    "tsc": "^2.0.4"
+  }
+}

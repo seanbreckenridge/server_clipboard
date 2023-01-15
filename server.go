@@ -1,6 +1,7 @@
 package server_clipboard
 
 import (
+	"embed"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -21,10 +22,25 @@ type CopyInput struct {
 	Text string `json:"text"`
 }
 
+//go:embed frontend/dist/index.html
+var index embed.FS
+
 func Server(password string, port int, debug bool) error {
 	// keep track of server state
 	lock := sync.RWMutex{}
 	clipboard := Clipboard{Text: "", Timestamp: time.Now()}
+
+	indexData, err := index.ReadFile("frontend/dist/index.html")
+	if err != nil {
+		return err
+	}
+
+	http.HandleFunc("/",
+		func(w http.ResponseWriter, r *http.Request) {
+			// write index to resposne
+			w.Header().Set("Content-Type", "text/html")
+			w.Write(indexData)
+		})
 
 	// start server
 	http.HandleFunc("/copy", func(w http.ResponseWriter, r *http.Request) {
