@@ -78,7 +78,7 @@ const App = () => {
   return (
     <>
       <head>
-        <title>Server Clipboard Frontend</title>
+        <title>Server Clipboard</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="charset" content="utf-8" />
         <link
@@ -142,7 +142,7 @@ const App = () => {
                 onChange={(e) => setCopyText(e.target.value)}
               ></textarea>
 
-              <p>Click to copy text to the server</p>
+              <p>Click to copy text to the server clipboard</p>
               <button id="copy-button" onClick={() => copy(copyText)}>
                 Copy to Server
               </button>
