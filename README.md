@@ -4,6 +4,10 @@ A server which saves my clipboard (in memory), so I can share it between my devi
 
 I use [termux](https://termux.com/) on my phone to communicate with my server (with `server_clipboard <c|p>` (copy/paste))
 
+On other devices I don't have a terminal on, this has a web interface at `/`:
+
+<img src="https://github.com/seanbreckenridge/server_clipboard/blob/main/frontend/demo.png?raw=true />
+
 ### Run
 
 Run `server_clipboard server` on a remote server somewhere, update your `~/.bashrc`/`~/.zshenv` to include a password/remote address:
