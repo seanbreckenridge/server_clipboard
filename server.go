@@ -29,6 +29,8 @@ func Server(password string, port int, debug bool) error {
 	// start server
 	http.HandleFunc("/copy", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/plain")
+		// allow cross origin requests
+		w.Header().Set("Access-Control-Allow-Origin", "*")
 
 		// check password
 		if r.Header.Get("password") != password {
@@ -68,6 +70,8 @@ func Server(password string, port int, debug bool) error {
 
 	http.HandleFunc("/paste", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/plain")
+		// allow cross origin requests
+		w.Header().Set("Access-Control-Allow-Origin", "*")
 
 		// check password
 		if r.Header.Get("password") != password {
