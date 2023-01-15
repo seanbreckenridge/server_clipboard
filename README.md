@@ -6,7 +6,7 @@ I use [termux](https://termux.com/) on my phone to communicate with my server (w
 
 On other devices I don't have a terminal on, this has a web interface at `/`:
 
-<img src="https://github.com/seanbreckenridge/server_clipboard/blob/main/frontend/demo.png?raw=true />
+<img src="https://github.com/seanbreckenridge/server_clipboard/blob/main/frontend/demo.png" alt="screencap of server html page">
 
 ### Run
 
