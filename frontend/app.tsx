@@ -110,7 +110,7 @@ const App = () => {
           <h2>Server Clipboard</h2>
           <div id="configuration">
             <h3>Configuration</h3>
-            <form onSubmit={() => {}}>
+            <form onSubmit={(e) => e.preventDefault()}>
               <label>
                 <span>Server URL:</span>
                 <input
