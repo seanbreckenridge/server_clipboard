@@ -14,7 +14,7 @@ func commandOutput(command string) string {
 	cmd := exec.Command("bash", "-c", command)
 	out, err := cmd.Output()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal(fmt.Sprintf("Error running %s: %s", command, err))
 	}
 	return string(out)
 }
