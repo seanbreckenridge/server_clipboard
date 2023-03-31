@@ -48,3 +48,11 @@ GLOBAL OPTIONS:
 ```
 
 This automatically detects which operating system you're on and uses the corresponding clipboard commands, see [`clipboard.go`](clipboard.go). If this cant, set the `CLIPBOARD_COPY_COMMAND` and `CLIPBOARD_PASTE_COMMAND` environment variables (those commands should read/write from/to STDIN/STDOUT)
+
+#### clear-after
+
+If you want to clear the clipboard after a certain amount of time, you can use the `--clear-after` flag. For example, to clear the clipboard after 10 minutes:
+
+```
+server_clipboard server --clear-after 600
+```
