@@ -54,9 +54,16 @@ func main() {
 						Value:   false,
 						Usage:   "enable debug logging",
 					},
+					&cli.IntFlag{
+						Name: "clear-after",
+						// 0 means never clear
+						Aliases: []string{"c"},
+						Value:   0,
+						Usage:   "clear clipboard after this many seconds [0 means never clear]",
+					},
 				},
 				Action: func(c *cli.Context) error {
-					return server_clipboard.Server(c.String("password"), c.Int("port"), c.Bool("debug"))
+					return server_clipboard.Server(c.String("password"), c.Int("port"), c.Bool("debug"), c.Int("clear-after"))
 				},
 			},
 			{
