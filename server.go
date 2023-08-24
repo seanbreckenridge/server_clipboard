@@ -4,7 +4,7 @@ import (
 	"embed"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -29,7 +29,6 @@ func Server(password string, port int, debug bool, clearAfter int) error {
 	// keep track of server state
 	lock := sync.RWMutex{}
 	clipboard := Clipboard{Text: "", Timestamp: time.Now()}
-	clearLoopRunning := false
 
 	indexData, err := index.ReadFile("frontend/dist/index.html")
 	if err != nil {
@@ -40,79 +39,34 @@ func Server(password string, port int, debug bool, clearAfter int) error {
 		log.Printf("server will clear clipboard %d seconds after last copy\n", clearAfter)
 	}
 
-	// code to clear clipboard after x seconds
-	// send a message to 'clearer' when a copy is made (if clearAfter > 0)
-	clearer := make(chan bool)
+	var clearAt *time.Time = nil
+
+	// start a goroutine to run the clear loop
+	// it can just wait 1/5th of the clearAfter time, and check if the time has expired
+	// if it has, clear the clipboard
 	go func() {
-		var clearAt *time.Time
-		clearAt = nil
+		if clearAfter <= 0 {
+			return
+		}
 		for {
-			select {
-			// code blocks here until a message is received on 'clearer'
-			case <-clearer:
-				// start timer
-				if clearAt != nil {
-					if debug {
-						log.Printf("clearAfter: reset timer to clear clipboard after %d seconds\n", clearAfter)
-					}
-				} else {
-					if debug {
-						log.Printf("clearAfter: started timer to clear clipboard after %d seconds\n", clearAfter)
-					}
-				}
-				ca := time.Now().Add(time.Duration(clearAfter) * time.Second)
-				clearAt = &ca
-				if clearLoopRunning {
-					if debug {
-						log.Printf("clearAfter: timer already running, skipping starting a new one\n")
-					}
-					continue
-				}
-
-				// start a goroutuine to wait for the timer
-				// this should not sleep exactly the time, but rather
-				// check some fraction of the clearAfter to see if the
-				// time has expired, since its possible that the timer
-				// gets reset to be a higher clearAt time before the timer expires
-				go func() {
-					// sleep for a fraction of the clearAfter time, but at least 1 second
-					// and at most 30 seconds
-					sleepSecs := clearAfter / 10
-					if sleepSecs < 1 {
-						sleepSecs = 1
-					} else if sleepSecs > 30 {
-						sleepSecs = 30
-					}
-					sleepFor := time.Duration(sleepSecs) * time.Second
-					for {
-						if clearAt == nil {
-							// timer was already reset?
-							if debug {
-								log.Printf("clearAfter: timer was reset, skipping\n")
-							}
-							clearLoopRunning = false
-							return
-						}
-
-						if time.Now().After(*clearAt) {
-							lock.Lock()
-							defer lock.Unlock()
-							if debug {
-								log.Printf("clearAfter: has been %d seconds since clipboard was last set, clearing clipboard\n", clearAfter)
-							}
-							clipboard = Clipboard{Text: "", Timestamp: time.Now()}
-							clearAt = nil
-							clearLoopRunning = false
-							return
-						}
-						if debug {
-							log.Printf("clearAfter: clear loop sleeping for %d seconds\n", sleepSecs)
-						}
-						time.Sleep(sleepFor)
-					}
-				}()
-				clearLoopRunning = true
+			if debug {
+				log.Printf("clearAfter: sleeping for %d seconds\n", clearAfter/5)
 			}
+			// sleep for 1/5th of the clearAfter time
+			time.Sleep(time.Duration(clearAfter/5) * time.Second)
+			if clearAt == nil {
+				continue
+			}
+			lock.Lock()
+			if time.Now().After(*clearAt) {
+				if debug {
+					log.Printf("clearAfter: has been %d seconds since clipboard was last set, clearing clipboard\n", clearAfter)
+				}
+
+				clipboard = Clipboard{Text: "", Timestamp: time.Now()}
+				clearAt = nil
+			}
+			lock.Unlock()
 		}
 	}()
 
@@ -137,7 +91,7 @@ func Server(password string, port int, debug bool, clearAfter int) error {
 		}
 
 		// read body
-		body, err := ioutil.ReadAll(r.Body)
+		body, err := io.ReadAll(r.Body)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			w.Write([]byte("error reading body"))
@@ -164,9 +118,13 @@ func Server(password string, port int, debug bool, clearAfter int) error {
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("updated remote clipboard"))
 
-		// clear clipboard after x seconds
+		// set clearAt time
 		if clearAfter > 0 {
-			clearer <- true
+			ca := time.Now().Add(time.Duration(clearAfter) * time.Second)
+			clearAt = &ca
+			if debug {
+				log.Printf("clearAfter: set clearAt to %s\n", clearAt.Format(time.RFC3339))
+			}
 		}
 	})
 
