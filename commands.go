@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 )
 
@@ -35,7 +35,7 @@ func Copy(password string, serverAddress string, clipboard string) (string, erro
 	defer resp.Body.Close()
 
 	// read response
-	respBody, err := ioutil.ReadAll(resp.Body)
+	respBody, err := io.ReadAll(resp.Body)
 	if resp.StatusCode != http.StatusOK {
 		return "", fmt.Errorf("error: %s", string(respBody))
 	}
@@ -59,10 +59,7 @@ func Paste(password string, serverAddress string) (string, error) {
 	defer resp.Body.Close()
 
 	// read response
-	if resp.StatusCode != http.StatusOK {
-		return "", fmt.Errorf("error: %d", resp.StatusCode)
-	}
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return "", err
 	}
