@@ -72,7 +72,7 @@ func Server(password string, port int, debug bool, clearAfter int) error {
 
 	http.HandleFunc("/",
 		func(w http.ResponseWriter, r *http.Request) {
-			// write index to resposne
+			// write index to response
 			w.Header().Set("Content-Type", "text/html")
 			w.Write(indexData)
 		})

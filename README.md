@@ -47,7 +47,7 @@ GLOBAL OPTIONS:
    --help, -h              show help (default: false)
 ```
 
-This automatically detects which operating system you're on and uses the corresponding clipboard commands, see [`clipboard.go`](clipboard.go). If this cant, set the `CLIPBOARD_COPY_COMMAND` and `CLIPBOARD_PASTE_COMMAND` environment variables (those commands should read/write from/to STDIN/STDOUT)
+This automatically detects which operating system you're on and uses the corresponding clipboard commands, see [`clipboard.go`](clipboard.go). If this can't, set the `CLIPBOARD_COPY_COMMAND` and `CLIPBOARD_PASTE_COMMAND` environment variables (those commands should read/write from/to STDIN/STDOUT)
 
 #### clear-after
 
