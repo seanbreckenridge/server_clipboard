@@ -4,12 +4,12 @@ THIS_DIR="$(realpath "$(dirname "${BASH_SOURCE[0]}")")"
 cd "${THIS_DIR}" || exit $?
 
 (
-
-	echo '<head><style>'
+	echo '<!DOCTYPE html><html lang="en"><head><charset="utf-8"><style>'
 	cat ./dist/bundle.css
 	echo '</style></head>'
 	echo '<div id="root"></div>'
 	echo '<script>'
 	cat ./dist/bundle.js
 	echo '</script>'
+	echo '</html>'
 ) >./dist/index.html
