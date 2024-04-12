@@ -32,6 +32,10 @@ func FetchClipboard(clipboard string) string {
 	} else {
 		switch on_machine.GetOS() {
 		case "linux":
+			// if user has wl-clipboard (wayland) installed, use that
+			if _, err := exec.LookPath("wl-paste"); err == nil {
+				return commandOutput("wl-paste")
+			}
 			return commandOutput("xclip -o -selection clipboard")
 		case "mac":
 			return commandOutput("pbpaste")
@@ -63,6 +67,10 @@ func SetClipboard(clipboard string) error {
 
 	switch on_machine.GetOS() {
 	case "linux":
+		// if user has wl-clipboard (wayland) installed, use that
+		if _, err := exec.LookPath("wl-copy"); err == nil {
+			return commandWithStdin("wl-copy", clipboard)
+		}
 		return commandWithStdin("xclip -i -selection clipboard", clipboard)
 	case "mac":
 		return commandWithStdin("pbcopy", clipboard)
